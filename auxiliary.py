@@ -1,35 +1,8 @@
-from math import sin, cos, sqrt, atan2, radians
+from math import sqrt
 
+from triangulation import Triangulation
 
 class Coordinates(object):
-
-    @staticmethod
-    def distance_between_coordinates_in_km(latitude_1, longitude_1, latitude_2, longitude_2):
-        """
-
-        :param latitude_1:
-        :param longitude_1:
-        :param latitude_2:
-        :param longitude_2:
-        :return:
-        """
-        # approximate radius of earth in km
-        r = 6373.0
-
-        lat1 = radians(latitude_1)
-        lon1 = radians(longitude_1)
-        lat2 = radians(latitude_2)
-        lon2 = radians(longitude_2)
-
-        d_lon = lon2 - lon1
-        d_lat = lat2 - lat1
-
-        a = sin(d_lat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(d_lon / 2) ** 2
-        c = 2 * atan2(sqrt(a), sqrt(1 - a))
-
-        distance = r * c
-
-        return distance
 
     @staticmethod
     def compute_fake_distances():
@@ -150,11 +123,11 @@ class Coordinates(object):
         horizontal_distances_with_b3 = []
         for i in range(len(lats_b1)):
             horizontal_distances_with_b1.append(
-                Coordinates.distance_between_coordinates_in_km(lats_b1[i], longs_b1[i], lats_p[i], longs_p[i]))
+                Triangulation.distance_between_coordinates_in_km(lats_b1[i], longs_b1[i], lats_p[i], longs_p[i]))
             horizontal_distances_with_b2.append(
-                Coordinates.distance_between_coordinates_in_km(lats_b2[i], longs_b2[i], lats_p[i], longs_p[i]))
+                Triangulation.distance_between_coordinates_in_km(lats_b2[i], longs_b2[i], lats_p[i], longs_p[i]))
             horizontal_distances_with_b3.append(
-                Coordinates.distance_between_coordinates_in_km(lats_b3[i], longs_b3[i], lats_p[i], longs_p[i]))
+                Triangulation.distance_between_coordinates_in_km(lats_b3[i], longs_b3[i], lats_p[i], longs_p[i]))
 
         pressures = [1.2,
                      1.9,
@@ -171,15 +144,15 @@ class Coordinates(object):
                      1.1]
         depths = []
         for i in pressures:
-            depths.append(10*(i-1))
+            depths.append(10 * (i - 1))
 
         diagonal_distances_with_b1 = []
         diagonal_distances_with_b2 = []
         diagonal_distances_with_b3 = []
         for i in range(len(depths)):
             diagonal_distances_with_b1.append(
-                sqrt((depths[i]*depths[i]) +
-                     (horizontal_distances_with_b1[i]*horizontal_distances_with_b1[i])))
+                sqrt((depths[i] * depths[i]) +
+                     (horizontal_distances_with_b1[i] * horizontal_distances_with_b1[i])))
             diagonal_distances_with_b2.append(
                 sqrt((depths[i] * depths[i]) +
                      (horizontal_distances_with_b2[i] * horizontal_distances_with_b2[i])))
@@ -204,6 +177,6 @@ class Coordinates(object):
 
 
 if __name__ == '__main__':
-    d = Coordinates().distance_between_coordinates_in_km(12, 3, 15, 9)
+    d = Triangulation().distance_between_coordinates_in_km(12, 3, 15, 9)
     print('Result : ' + str(d) + ' km.')
     diagonal_d = Coordinates().compute_fake_distances()
