@@ -144,14 +144,51 @@ class Coordinates(object):
             horizontal_distances_with_b3.append(
                 Coordinates.distance_between_coordinates_in_km(lats_b3[i], longs_b3[i], lats_p[i], longs_p[i]))
 
-        for i in range(len(horizontal_distances_with_b1)):
-            print(str(i) + ' ' + str(horizontal_distances_with_b1[i]) + ' ' + str(horizontal_distances_with_b2[i])
-                  + ' ' + str(horizontal_distances_with_b3[i]))
+        pressures = [1.2,
+                     1.9,
+                     2.6,
+                     3.8,
+                     4.7,
+                     5.2,
+                     5.6,
+                     5.3,
+                     4.9,
+                     3.8,
+                     2.5,
+                     1.9,
+                     1.1]
+        depths = []
+        for i in pressures:
+            depths.append(10*(i-1))
 
-        # TODO : passer à la distance diagonale avec la profondeur
+        diagonal_distances_with_b1 = []
+        diagonal_distances_with_b2 = []
+        diagonal_distances_with_b3 = []
+        for i in range(len(depths)):
+            diagonal_distances_with_b1.append(
+                sqrt((depths[i]*depths[i]) +
+                     (horizontal_distances_with_b1[i]*horizontal_distances_with_b1[i])))
+            diagonal_distances_with_b2.append(
+                sqrt((depths[i] * depths[i]) +
+                     (horizontal_distances_with_b2[i] * horizontal_distances_with_b2[i])))
+            diagonal_distances_with_b3.append(
+                sqrt((depths[i] * depths[i]) +
+                     (horizontal_distances_with_b3[i] * horizontal_distances_with_b3[i])))
+
+        print('Diagonal distances : ')
+        for i in range(len(horizontal_distances_with_b1)):
+            print(str(diagonal_distances_with_b1[i]))
+        print('---')
+        for i in range(len(horizontal_distances_with_b2)):
+            print(str(diagonal_distances_with_b2[i]))
+        print('---')
+        for i in range(len(horizontal_distances_with_b3)):
+            print(str(diagonal_distances_with_b3[i]))
+
+        return [diagonal_distances_with_b1, diagonal_distances_with_b2, diagonal_distances_with_b3]
 
 
 if __name__ == '__main__':
     d = Coordinates().distance_between_coordinates_in_km(12, 3, 15, 9)
     print('Result : ' + str(d) + ' km.')
-    Coordinates().compute_fake_distances()
+    diagonal_d = Coordinates().compute_fake_distances()
