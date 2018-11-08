@@ -177,13 +177,16 @@ class Coordinates(object):
 
         print('Diagonal distances : ')
         for i in range(len(horizontal_distances_with_b1)):
-            print(str(diagonal_distances_with_b1[i]))
+            print('Diagonal : ' + str(diagonal_distances_with_b1[i]) + ', horizontal : '
+                  + str(horizontal_distances_with_b1[i]) + ', vertical : ' + str(depths[i]))
         print('---')
         for i in range(len(horizontal_distances_with_b2)):
-            print(str(diagonal_distances_with_b2[i]))
+            print('Diagonal : ' + str(diagonal_distances_with_b2[i]) + ', horizontal : '
+                  + str(horizontal_distances_with_b2[i]) + ', vertical : ' + str(depths[i]))
         print('---')
         for i in range(len(horizontal_distances_with_b3)):
-            print(str(diagonal_distances_with_b3[i]))
+            print('Diagonal : ' + str(diagonal_distances_with_b3[i]) + ', horizontal : '
+                  + str(horizontal_distances_with_b3[i]) + ', vertical : ' + str(depths[i]))
 
         return [diagonal_distances_with_b1, diagonal_distances_with_b2, diagonal_distances_with_b3]
 
