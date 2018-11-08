@@ -5,6 +5,14 @@ class Coordinates(object):
 
     @staticmethod
     def distance_between_coordinates_in_km(latitude_1, longitude_1, latitude_2, longitude_2):
+        """
+
+        :param latitude_1:
+        :param longitude_1:
+        :param latitude_2:
+        :param longitude_2:
+        :return:
+        """
         # approximate radius of earth in km
         r = 6373.0
 
@@ -25,6 +33,10 @@ class Coordinates(object):
 
     @staticmethod
     def compute_fake_distances():
+        """
+
+        :return:
+        """
         lats_b1 = [42.475537,
                    42.462165,
                    42.459861,
