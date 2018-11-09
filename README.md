@@ -6,4 +6,4 @@ The smart dive project consists in determining water measures in depth thanks to
 ## Program objective
 This python script gathers the data from the diver's and GPS endpoints, aggregates tham and perform this calculation to return the correct coordinates of the diver, associated with each measure.
 
-_Realized during INSA Toulouse 5th year ISS Hackaton - November 2019_
+_Realized during INSA Toulouse 5th year ISS Hackaton - November 2018_
