@@ -1,7 +1,4 @@
-import sys
 from math import sin, cos, sqrt, atan2, radians
-import geopy
-import geopy.distance
 
 
 class Triangulation(object):
@@ -59,7 +56,8 @@ class Triangulation(object):
         Credits to https://gist.github.com/xaedes/974535e71009fa8f090e
         @param circle1: tuple(x,y,radius)
         @param circle2: tuple(x,y,radius)
-        @result: (point1, point2, dx, dy) tuple of intersection points (which are (x,y) tuple) and meter delta in x and y
+        @result: (point1, point2, dx, dy) tuple of intersection points (which are (x,y) tuple) and meter delta
+        in x and y
         """
         # return self.circle_intersection_sympy(circle1,circle2)
         x1, y1, r1 = circle1
@@ -114,7 +112,6 @@ class Triangulation(object):
                         abs(x2 - x3) + abs(y2 - y3),
                         abs(x2 - x4) + abs(y2 - y4))
 
-        point = (-1, -1)
         if min_point == abs(x1 - x3) + abs(y1 - y3) or min_point == abs(x1 - x4) + abs(y1 - y4):
             point = p1
         else:
@@ -177,7 +174,3 @@ class Triangulation(object):
         print('+----------------------------------------------------------')
 
         return [good_intersection_coordinates[0], good_intersection_coordinates[1]]
-
-
-if __name__ == '__main__':
-    Triangulation().run()

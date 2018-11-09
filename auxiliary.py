@@ -174,7 +174,6 @@ class Coordinates(object):
             print('Diagonal : ' + str(diagonal_distances_with_b3[i]) + ', horizontal : '
                   + str(horizontal_distances_with_b3[i]) + ', vertical : ' + str(depths[i]))
 
-
         return [diagonal_distances_with_b1, diagonal_distances_with_b2, diagonal_distances_with_b3]
 
 

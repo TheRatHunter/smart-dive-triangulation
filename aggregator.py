@@ -1,23 +1,24 @@
-import csv, sys
+import csv
+import sys
 
 from triangulation import Triangulation
 
 
 class Aggregator(object):
     @staticmethod
-    def find_minimum_gap_index(value, list):
+    def find_minimum_gap_index(value, lst):
         """
         Return the index of the closest value from 'value' in list (used to find closest timestamp)
         :param value: The value to look for
-        :param list: The list to be searched
+        :param lst: The list to be searched
         :return: Index of the min gap
         """
         min_val = sys.float_info.max
         min_index = -1
-        for val in list:
+        for val in lst:
             if abs(value - val) < min_val:
                 min_val = value - val
-                min_index = list.index(val)
+                min_index = lst.index(val)
 
         return min_index
 
