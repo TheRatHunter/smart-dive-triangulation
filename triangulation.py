@@ -6,7 +6,7 @@ import geopy.distance
 
 class Triangulation(object):
     @staticmethod
-    def distance_between_coordinates_in_km(latitude_1, longitude_1, latitude_2, longitude_2):
+    def distance_between_coordinates_in_m(latitude_1, longitude_1, latitude_2, longitude_2):
         """
         Returns distance between two coordinates in km
         :param latitude_1:
@@ -31,7 +31,7 @@ class Triangulation(object):
 
         distance = r * c
 
-        return distance
+        return distance*1000
 
     @staticmethod
     def get_depth_from_pressure(pressure):
@@ -69,7 +69,7 @@ class Triangulation(object):
 
         # Pass coordinates difference in m difference
         x_on_y_ratio = dx / dy
-        distance_in_m = Triangulation.distance_between_coordinates_in_km(x1, y1, x2, y2)
+        distance_in_m = Triangulation.distance_between_coordinates_in_m(x1, y1, x2, y2)
         dy = sqrt((distance_in_m * distance_in_m) / (x_on_y_ratio * x_on_y_ratio + 1))
         dx = x_on_y_ratio * dy
 
@@ -161,20 +161,20 @@ class Triangulation(object):
                 [b1_lat + ((good_intersection_meters[0] / dx_meters_1_2) * dx_coordinates_1_2),
                  b1_long + ((good_intersection_meters[1] / dy_meters_1_2) * dy_coordinates_1_2)]
 
-        print('+-------- Diver\'s GPS coordinates computation ---------+')
+        print('+-------- Diver\'s GPS coordinates computation -------------')
         print('| Beacon 1 : (' + "{0:.2f}".format(b1_lat) + ', ' + "{0:.2f}".format(
-            b1_long) + ')                             |')
+            b1_long) + ')')
         print('| Beacon 2 : (' + "{0:.2f}".format(b2_lat) + ', ' + "{0:.2f}".format(
-            b2_long) + ')                             |')
+            b2_long) + ')')
         print('| Beacon 3 : (' + "{0:.2f}".format(b3_lat) + ', ' + "{0:.2f}".format(
-            b3_long) + ')                             |')
+            b3_long) + ')')
         print('| Diver distances: (' + "{0:.2f}".format(horizontal_dist1) + ", " + "{0:.2f}".format(
-            horizontal_dist2) + ', ' + "{0:.2f}".format(horizontal_dist3) + ')                |')
+            horizontal_dist2) + ', ' + "{0:.2f}".format(horizontal_dist3) + ')')
         print('| Point found in meters delta from b1 : (' + "{0:.2f}".format(good_intersection_meters[0]) + ', ' +
-              "{0:.2f}".format(good_intersection_meters[1]) + ') |')
+              "{0:.2f}".format(good_intersection_meters[1]) + ')')
         print('| Point found in GPS : (' + "{0:.2f}".format(good_intersection_coordinates[0]) + ', ' +
-              "{0:.2f}".format(good_intersection_coordinates[1]) + ')                   |')
-        print('+------------------------------------------------------+')
+              "{0:.2f}".format(good_intersection_coordinates[1]) + ')')
+        print('+----------------------------------------------------------')
 
         return [good_intersection_coordinates[0], good_intersection_coordinates[1]]
 

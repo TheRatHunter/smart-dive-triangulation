@@ -124,11 +124,11 @@ class Coordinates(object):
         horizontal_distances_with_b3 = []
         for i in range(len(lats_b1)):
             horizontal_distances_with_b1.append(
-                Triangulation.distance_between_coordinates_in_km(lats_b1[i], longs_b1[i], lats_p[i], longs_p[i]))
+                Triangulation.distance_between_coordinates_in_m(lats_b1[i], longs_b1[i], lats_p[i], longs_p[i]))
             horizontal_distances_with_b2.append(
-                Triangulation.distance_between_coordinates_in_km(lats_b2[i], longs_b2[i], lats_p[i], longs_p[i]))
+                Triangulation.distance_between_coordinates_in_m(lats_b2[i], longs_b2[i], lats_p[i], longs_p[i]))
             horizontal_distances_with_b3.append(
-                Triangulation.distance_between_coordinates_in_km(lats_b3[i], longs_b3[i], lats_p[i], longs_p[i]))
+                Triangulation.distance_between_coordinates_in_m(lats_b3[i], longs_b3[i], lats_p[i], longs_p[i]))
 
         pressures = [1.2,
                      1.9,
@@ -174,10 +174,11 @@ class Coordinates(object):
             print('Diagonal : ' + str(diagonal_distances_with_b3[i]) + ', horizontal : '
                   + str(horizontal_distances_with_b3[i]) + ', vertical : ' + str(depths[i]))
 
+
         return [diagonal_distances_with_b1, diagonal_distances_with_b2, diagonal_distances_with_b3]
 
 
 if __name__ == '__main__':
-    d = Triangulation().distance_between_coordinates_in_km(12, 3, 15, 9)
+    d = Triangulation().distance_between_coordinates_in_m(12, 3, 15, 9)
     print('Result : ' + str(d) + ' km.')
     diagonal_d = Coordinates().compute_fake_distances()
