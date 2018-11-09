@@ -124,8 +124,12 @@ class Aggregator(object):
                              diver_gps[0],
                              diver_gps[1],
                              point_depth])
+
+        print('Final tab :')
         for row in rich_tab:
             print(row)
+
+        return rich_tab
 
 
 if __name__ == '__main__':

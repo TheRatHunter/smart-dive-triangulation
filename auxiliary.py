@@ -2,13 +2,14 @@ from math import sqrt
 
 from triangulation import Triangulation
 
+
 class Coordinates(object):
 
     @staticmethod
     def compute_fake_distances():
         """
-
-        :return:
+        Computes the distances for fake coordinates
+        :return: List of distances for each beacon
         """
         lats_b1 = [42.475537,
                    42.462165,

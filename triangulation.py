@@ -1,17 +1,19 @@
 import sys
 from math import sin, cos, sqrt, atan2, radians
+import geopy
+import geopy.distance
 
 
 class Triangulation(object):
     @staticmethod
     def distance_between_coordinates_in_km(latitude_1, longitude_1, latitude_2, longitude_2):
         """
-
+        Returns distance between two coordinates in km
         :param latitude_1:
         :param longitude_1:
         :param latitude_2:
         :param longitude_2:
-        :return:
+        :return: distance
         """
         # approximate radius of earth in km
         r = 6373.0
@@ -57,7 +59,7 @@ class Triangulation(object):
         Credits to https://gist.github.com/xaedes/974535e71009fa8f090e
         @param circle1: tuple(x,y,radius)
         @param circle2: tuple(x,y,radius)
-        @result: tuple of intersection points (which are (x,y) tuple)
+        @result: (point1, point2, dx, dy) tuple of intersection points (which are (x,y) tuple) and meter delta in x and y
         """
         # return self.circle_intersection_sympy(circle1,circle2)
         x1, y1, r1 = circle1
@@ -66,11 +68,9 @@ class Triangulation(object):
         dx, dy = x2 - x1, y2 - y1
 
         # Pass coordinates difference in m difference
-
-        x_on_y_ratio = dx/dy
+        x_on_y_ratio = dx / dy
         distance_in_m = Triangulation.distance_between_coordinates_in_km(x1, y1, x2, y2)
-
-        dy = sqrt((distance_in_m*distance_in_m) / (x_on_y_ratio*x_on_y_ratio + 1))
+        dy = sqrt((distance_in_m * distance_in_m) / (x_on_y_ratio * x_on_y_ratio + 1))
         dx = x_on_y_ratio * dy
 
         d = sqrt(dx * dx + dy * dy)
@@ -93,7 +93,7 @@ class Triangulation(object):
         ys1 = ym - h * dx / d
         ys2 = ym + h * dx / d
 
-        return (xs1, ys1), (xs2, ys2)
+        return (xs1, ys1), (xs2, ys2), dx, dy
 
     @staticmethod
     def find_closest_points_amongst_4(p1, p2, p3, p4):
@@ -138,35 +138,45 @@ class Triangulation(object):
         :param horizontal_dist3: Horizontal distance between diver and beacon 3
         :return: GPS Coordinates of the diver
         """
-        print('----')
         inters1 = Triangulation.circle_intersection((b1_lat, b1_long, horizontal_dist1),
-                                                (b2_lat, b2_long, horizontal_dist2))
+                                                    (b2_lat, b2_long, horizontal_dist2))
         inters2 = Triangulation.circle_intersection((b1_lat, b1_long, horizontal_dist1),
-                                                (b3_lat, b3_long, horizontal_dist3))
-        good_intersection_meters = Triangulation.find_closest_points_amongst_4(inters1[0], inters1[1], inters2[0], inters2[1])
+                                                    (b3_lat, b3_long, horizontal_dist3))
+        good_intersection_meters = Triangulation.find_closest_points_amongst_4(inters1[0], inters1[1], inters2[0],
+                                                                               inters2[1])
 
+        # Transform the coordinates back in GPS
+        dx_meters_1_2 = inters1[2]
+        dy_meters_1_2 = inters1[3]
+        dx_coordinates_1_2 = abs(b1_lat - b2_lat)
+        dy_coordinates_1_2 = abs(b1_long - b2_long)
 
-        """"""
-        # TODO : Pass meter coordinates to GPS coordinates
-        # return self.circle_intersection_sympy(circle1,circle2)
-        x1, y1, r1 = b1_lat, b1_long, horizontal_dist1
-        x2, y2, r2 = circle2
-        # http://stackoverflow.com/a/3349134/798588
-        dx, dy = x2 - x1, y2 - y1
+        good_intersection_coordinates = [-1.0, -1.0]
+        if dx_meters_1_2 == 0:
+            dx_meters_1_2 = 1
+        if dy_meters_1_2 == 0:
+            dy_meters_1_2 = 1
+        if dx_meters_1_2 != 0 and dx_meters_1_2 != 0:
+            good_intersection_coordinates = \
+                [b1_lat + ((good_intersection_meters[0] / dx_meters_1_2) * dx_coordinates_1_2),
+                 b1_long + ((good_intersection_meters[1] / dy_meters_1_2) * dy_coordinates_1_2)]
 
-        # Pass coordinates difference in m difference
+        print('+-------- Diver\'s GPS coordinates computation ---------+')
+        print('| Beacon 1 : (' + "{0:.2f}".format(b1_lat) + ', ' + "{0:.2f}".format(
+            b1_long) + ')                             |')
+        print('| Beacon 2 : (' + "{0:.2f}".format(b2_lat) + ', ' + "{0:.2f}".format(
+            b2_long) + ')                             |')
+        print('| Beacon 3 : (' + "{0:.2f}".format(b3_lat) + ', ' + "{0:.2f}".format(
+            b3_long) + ')                             |')
+        print('| Diver distances: (' + "{0:.2f}".format(horizontal_dist1) + ", " + "{0:.2f}".format(
+            horizontal_dist2) + ', ' + "{0:.2f}".format(horizontal_dist3) + ')                |')
+        print('| Point found in meters delta from b1 : (' + "{0:.2f}".format(good_intersection_meters[0]) + ', ' +
+              "{0:.2f}".format(good_intersection_meters[1]) + ') |')
+        print('| Point found in GPS : (' + "{0:.2f}".format(good_intersection_coordinates[0]) + ', ' +
+              "{0:.2f}".format(good_intersection_coordinates[1]) + ')                   |')
+        print('+------------------------------------------------------+')
 
-        x_on_y_ratio = dx / dy
-        distance_in_m = Triangulation.distance_between_coordinates_in_km(x1, y1, x2, y2)
-
-        dy = sqrt((distance_in_m * distance_in_m) / (x_on_y_ratio * x_on_y_ratio + 1))
-        dx = x_on_y_ratio * dy
-        """"""
-        return [good_intersection[0], good_intersection[1]]
-
-    @staticmethod
-    def run():
-        print('Hello, world!')
+        return [good_intersection_coordinates[0], good_intersection_coordinates[1]]
 
 
 if __name__ == '__main__':
