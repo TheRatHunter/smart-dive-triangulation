@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import csv
 import sys
 
@@ -30,7 +31,7 @@ class Aggregator(object):
         :param b2_path: Beacon 2 file
         :param b3_path: Beacon 3 file
         :param p_path: Diver file
-        :return: Tab with format | timestamp | T° | Pression | coordonnée plongeur | profondeur (liée à la pression) |
+        :return: Tab with format - timestamp - T° - Pression - coordonnee plongeur - profondeur (liee a la pression)
         """
         b1_timestamps = []
         b1_lats = []
